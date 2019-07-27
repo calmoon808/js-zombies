@@ -115,6 +115,9 @@
     get name(){
       return this._name;
     }
+    set name(newName){
+      this._name = newName;
+    }
     get health(){
       return this._health;
     }
@@ -124,14 +127,26 @@
     get strength(){
       return this._strength;
     }
+    set strength(newStrength){
+      this._strength = newStrength;
+    }
     get speed(){
       return this._speed;
+    }
+    set speed(newSpeed){
+      this._speed = newSpeed;
     }
     get isAlive(){
       return this._isAlive;
     }
+    set isAlive(bool){
+      this._isAlive = bool;
+    }
     get equipped(){
       return this._equipped;
+    }
+    set equipped(bool){
+      this._equipped = bool;
     }
     getPack(){
       return this._pack;
@@ -154,34 +169,29 @@
         console.log(this._name + ' discarded ' + item);
         return true;
       } else {
+        console.log("You don't have " + item)
         return false;
       }
     }
     checkPack(){
-      console.log(this.getPack());
+      console.log(this.getPack().join(' '));
     }
     equip(itemToEquip){
-      if (itemToEquip instanceof Weapon){
-        if (this.getPack().indexOf(itemToEquip) !== -1){
-          if (this._equipped !== false){
-            this.getPack().push(this._equipped);
-          }
-          this._equipped = itemToEquip;
-          this.getPack().splice(this.getPack().indexOf(itemToEquip), 1);
+      if (itemToEquip instanceof Weapon && this.getPack().indexOf(itemToEquip) !== -1){
+        if (this._equipped !== false){
+          this.getPack().push(this._equipped);
         }
+        this._equipped = itemToEquip;
+        this.getPack().splice(this.getPack().indexOf(itemToEquip), 1);
       }
     }
     eat(itemToEat){
-      if (itemToEat instanceof Food){
-        if (this.getPack().indexOf(itemToEat) !== -1){
-          this.getPack().splice(this.getPack().indexOf(itemToEat), 1);
-          if (this._health + itemToEat.energy > this._maxHealth){
-            this._health = this._maxHealth;
-          } else {
-            this._health += itemToEat.energy;
-          }
+      if (itemToEat instanceof Food && this.getPack().indexOf(itemToEat) !== -1){
+        this.getPack().splice(this.getPack().indexOf(itemToEat), 1);
+        if (this._health + itemToEat.energy > this._maxHealth){
+          this._health = this._maxHealth;
         } else {
-          this._health = this._health;
+          this._health += itemToEat.energy;
         }
       }
     }
