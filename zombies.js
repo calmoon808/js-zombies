@@ -7,7 +7,17 @@
  * @param {string} name     The item's name.
  * @property {string} name
  */
-
+  class Item {
+    constructor(name) {
+      this._name = name
+    }
+    get name(){
+      return this._name;
+    }
+    set name(newName) {
+      this._name = newName;
+    }
+  }
 
 /**
  * Class => Weapon(name, damage)
@@ -24,7 +34,18 @@
  * @param {number} damage   The weapon's damage.
  * @property {number} damage
  */
-
+  class Weapon extends Item {
+    constructor(name, damage) {
+      super(name);
+      this._damage = damage;
+    }
+    get damage(){
+      return this._damage;
+    }
+    set damage(newDamage){
+      this._damage = newDamage;
+    }
+  }
 
 /**
  * Weapon Extends Item Class
@@ -54,7 +75,18 @@
  * Food Extends Item Class
  * -----------------------------
  */
-
+  class Food extends Item {
+    constructor(name, energy){
+      super(name);
+      this._energy = energy;
+    }
+    get energy(){
+      return this._energy;
+    }
+    set energy(newEnergy){
+      this._energy = newEnergy;
+    }
+  }
 
 
 /**
@@ -78,8 +110,117 @@
  * @property {method} getPack              Returns private variable `pack`.
  * @property {method} getMaxHealth         Returns private variable `maxHealth`.
  */
-
-
+  class Player {
+    constructor(name, health, strength, speed){
+      this._name = name;
+      this._health = health;
+      this._strength = strength;
+      this._speed = speed;
+      this._pack = [];
+      this._maxHealth = health;
+      this._isAlive = true;
+      this._equipped = false;
+    }
+    get name(){
+      return this._name;
+    }
+    set name(newName){
+      this._name = newName;
+    }
+    get health(){
+      return this._health;
+    }
+    set health(newHealth){
+      this._health = newHealth;
+    }
+    get strength(){
+      return this._strength;
+    }
+    set strength(newStrength){
+      this._strength = newStrength;
+    }
+    get speed(){
+      return this._speed;
+    }
+    set speed(newSpeed){
+      this._speed = newSpeed;
+    }
+    get isAlive(){
+      return this._isAlive;
+    }
+    set isAlive(bool){
+      this._isAlive = bool;
+    }
+    get equipped(){
+      return this._equipped;
+    }
+    set equipped(bool){
+      this._equipped = bool;
+    }
+    getPack(){
+      return this._pack;
+    }
+    getMaxHealth(){
+      return this._maxHealth;
+    }
+    takeItem(item){
+      if (this.getPack().length < 3){
+        this.getPack().push(item);
+        return true;
+      } else {
+        console.log('not enough room');
+        return false;
+      }
+    }
+    discardItem(item){
+      if (this.getPack().indexOf(item) !== -1){
+        this.getPack().splice(this.getPack().indexOf(item), 1);
+        console.log(this._name + ' discarded ' + item);
+        return true;
+      } else {
+        console.log(this._name + " don't have " + item)
+        return false;
+      }
+    }
+    checkPack(){
+      console.log(this.getPack().join(' '));
+    }
+    equip(itemToEquip){
+      if (itemToEquip instanceof Weapon && this.getPack().indexOf(itemToEquip) !== -1){
+        if (this._equipped !== false){
+          this.getPack().push(this._equipped);
+        }
+        this._equipped = itemToEquip;
+        this.getPack().splice(this.getPack().indexOf(itemToEquip), 1);
+      }
+    }
+    eat(itemToEat){
+      if (itemToEat instanceof Food && this.getPack().indexOf(itemToEat) !== -1){
+        this.getPack().splice(this.getPack().indexOf(itemToEat), 1);
+        if (this._health + itemToEat.energy > this._maxHealth){
+          this._health = this._maxHealth;
+        } else {
+          this._health += itemToEat.energy;
+        }
+      }
+    }
+    useItem(item){
+      if (item instanceof Weapon){
+        this.equip(item);
+      } else if (item instanceof Food){
+        this.eat(item);
+      }
+    }
+    equippedWith(){
+      if (this._equipped === false){
+        console.log('you no mo gear');
+        return false;
+      } else {
+        console.log(this._name + ' is using ' + this._equipped);
+        return this._equipped.name;
+      }
+    }
+  }
 /**
  * Player Class Method => checkPack()
  * -----------------------------
@@ -90,7 +231,7 @@
  * You should be able to invoke this function on a Player instance.
  *
  * @name checkPack
- */
+ */ 
 
 
 /**
@@ -224,7 +365,39 @@
  * @property {number} speed
  * @property {boolean} isAlive      Default value should be `true`.
  */
-
+  class Zombie {
+    constructor(health, strength, speed){
+      this._speed = speed;
+      this._strength = strength;
+      this._health = health;
+      const _maxHealth = health;
+      this._isAlive = true;
+    }
+    get health(){
+      return this._health;
+    }
+    set health(newHealth){
+      this._health = newHealth;
+    }
+    get strength(){
+      return this._strength;
+    }
+    set strength(newStrength){
+      this._strength = newStrength;
+    }
+    get speed(){
+      return this._speed;
+    }
+    set speed(newSpeed){
+      this._speed = newSpeed;
+    }
+    get isAlive(){
+      return this._isAlive;
+    }
+    set isAlive(bool){
+      this._isAlive = bool;
+    }
+  }
 
 /**
  * Class => FastZombie(health, strength, speed)
@@ -246,7 +419,11 @@
  * FastZombie Extends Zombie Class
  * -----------------------------
  */
-
+  class FastZombie extends Zombie {
+    constructor(health, strength, speed){
+      super(health, strength, speed);
+    }
+  }
 
 
 /**
@@ -269,7 +446,11 @@
  * StrongZombie Extends Zombie Class
  * -----------------------------
  */
-
+  class StrongZombie extends Zombie {
+    constructor(health, strength, speed){
+      super(health, strength, speed);
+    }
+  }
 
 
 /**
@@ -292,7 +473,11 @@
  * RangedZombie Extends Zombie Class
  * -----------------------------
  */
-
+  class RangedZombie extends Zombie {
+    constructor(health, strength, speed){
+      super(health, strength, speed);
+    }
+  }
 
 
 /**
@@ -315,7 +500,11 @@
  * ExplodingZombie Extends Zombie Class
  * -----------------------------
  */
-
+  class ExplodingZombie extends Zombie {
+    constructor(health, strength, speed){
+      super(health, strength, speed);
+    }
+  }
 
 
 
