@@ -14,6 +14,9 @@
     get name(){
       return this._name;
     }
+    set name(newName) {
+      this._name = newName;
+    }
   }
 
 /**
@@ -38,6 +41,9 @@
     }
     get damage(){
       return this._damage;
+    }
+    set damage(newDamage){
+      this._damage = newDamage;
     }
   }
 
@@ -76,6 +82,9 @@
     }
     get energy(){
       return this._energy;
+    }
+    set energy(newEnergy){
+      this._energy = newEnergy;
     }
   }
 
@@ -169,7 +178,7 @@
         console.log(this._name + ' discarded ' + item);
         return true;
       } else {
-        console.log("You don't have " + item)
+        console.log(this._name + " don't have " + item)
         return false;
       }
     }
@@ -361,20 +370,32 @@
       this._speed = speed;
       this._strength = strength;
       this._health = health;
-      this._maxHealth = health;
+      const _maxHealth = health;
       this._isAlive = true;
     }
     get health(){
       return this._health;
     }
+    set health(newHealth){
+      this._health = newHealth;
+    }
     get strength(){
       return this._strength;
+    }
+    set strength(newStrength){
+      this._strength = newStrength;
     }
     get speed(){
       return this._speed;
     }
+    set speed(newSpeed){
+      this._speed = newSpeed;
+    }
     get isAlive(){
       return this._isAlive;
+    }
+    set isAlive(bool){
+      this._isAlive = bool;
     }
   }
 
