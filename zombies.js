@@ -94,68 +94,66 @@ function Player(name, health,strength, speed){
   this.strength = strength;
   this.speed = speed;
   this.isAlive = true;
-  this._pack = [];
-  this._maxHealth = health;
+  const _pack = [];
+  const _maxHealth = health;
   this.equipped = false;
 
   this.getPack = function(){
-    return this._pack;
+    return _pack;
   }
 
   this.getMaxHealth = function(){
-    return this._maxHealth;
+    return _maxHealth;
   }
 
-  this.takeItem = function(item){
-    if (this._pack.length === 3){
+  Player.prototype.takeItem = function(item){
+    if (_pack.length === 3){
       console.log('Not enough room.');
+      return false;
     } else {
-      this._pack.push(item);
+      console.log(this._name + ' got ' + item);
+      _pack.push(item);
+      return true;
     }
   }
 
-  this.discardItem = function(item){
+  Player.prototype.discardItem = function(item){
     if (this.getPack().indexOf(item) !== -1){
       this.getPack().splice(this.getPack().indexOf(item), 1);
       console.log(this._name + ' discarded ' + item);
       return true;
     } else {
+      console.log("Can't discard what you don't have");
       return false;
     }
   }
 
-  this.checkPack = function(){
-    console.log(this.getPack());
+  Player.prototype.checkPack = function(){
+    console.log(this.getPack().join(' '));
   }
 
-  this.equip = function(itemToEquip){
-    if (itemToEquip instanceof Weapon){
-      if (this.getPack().indexOf(itemToEquip) !== -1){
-        if (this.equipped !== false){
-          this.getPack().push(this.equipped);
-        }
-        this.equipped = itemToEquip;
-        this.getPack().splice(this.getPack().indexOf(itemToEquip), 1);
+  Player.prototype.equip = function(itemToEquip){
+    if (itemToEquip instanceof Weapon && this.getPack().indexOf(itemToEquip) !== -1){
+      if (this.equipped !== false){
+        this.getPack().push(this.equipped);
       }
+      this.equipped = itemToEquip;
+      this.getPack().splice(this.getPack().indexOf(itemToEquip), 1);
     }
   }
 
-  this.eat = function(itemToEat){
-    if (itemToEat instanceof Food){
-      if (this.getPack().indexOf(itemToEat) !== -1){
-        this.getPack().splice(this.getPack().indexOf(itemToEat), 1);
-        if (this.health + itemToEat.energy > this._maxHealth){
-          this.health = this._maxHealth;
-        } else {
-          this.health += itemToEat.energy;
-        }
+  Player.prototype.eat = function(itemToEat){
+    if (itemToEat instanceof Food && this.getPack().indexOf(itemToEat) !== -1){
+      this.getPack().splice(this.getPack().indexOf(itemToEat), 1);
+      if (this.health + itemToEat.energy > _maxHealth){
+        this.health = _maxHealth;
       } else {
-        this.health = this.health;
+        this.health += itemToEat.energy;
       }
     }
   }
 
-  this.useItem = function(item){
+  Player.prototype.useItem = function(item){
     if (item instanceof Weapon){
       this.equip(item);
     } else if (item instanceof Food){
@@ -163,7 +161,7 @@ function Player(name, health,strength, speed){
     }
   }
 
-  this.equippedWith = function(){
+  Player.prototype.equippedWith = function(){
     if (this.equipped === false){
       console.log('you no mo gear');
       return false;
@@ -178,7 +176,7 @@ function Zombie(health, strength, speed){
   this.health = health;
   this.strength = strength;
   this.speed = speed;
-  this._maxHealth = health;
+  _maxHealth = health;
   this.isAlive = true;
 
   this.getHealth = function(){
