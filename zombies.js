@@ -145,8 +145,8 @@ function Player(name, health,strength, speed){
   Player.prototype.eat = function(itemToEat){
     if (itemToEat instanceof Food && this.getPack().indexOf(itemToEat) !== -1){
       this.getPack().splice(this.getPack().indexOf(itemToEat), 1);
-      if (this.health + itemToEat.energy > _maxHealth){
-        this.health = _maxHealth;
+      if (this.health + itemToEat.energy > this.getMaxHealth()){
+        this.health = this.getMaxHealth();
       } else {
         this.health += itemToEat.energy;
       }
@@ -176,7 +176,7 @@ function Zombie(health, strength, speed){
   this.health = health;
   this.strength = strength;
   this.speed = speed;
-  _maxHealth = health;
+  const _maxHealth = health;
   this.isAlive = true;
 
   this.getHealth = function(){
